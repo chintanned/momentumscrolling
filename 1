@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body {
+    margin: 0;
+  }
+
+  ::-webkit-scrollbar {
+    width: 0 !important;
+  }
+
+  main {
+    width: 100%;
+    position: fixed;
+  }
+
+  .section {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3em;
+    font-family: sans-serif;
+  }
+
+  .one {
+    background-color: #242582;
+    color: #fff;
+  }
+
+  .two {
+    background-color: #f64c72;
+    color: #fff;
+  }
+
+  .three {
+    background-color: #99738e;
+    color: #fff;
+  }
+</style>
+</head>
+<body>
+  <main id="main">
+    <div class="section one">Section 1</div>
+    <div class="section two">Section 2</div>
+    <div class="section three">Section 3</div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const body = document.body;
+      const main = document.getElementById('main');
+
+      let sx = 0, // For scroll positions
+          sy = 0;
+      let dx = sx, // For container positions
+          dy = sy;
+
+      body.style.height = main.clientHeight + 'px';
+
+      main.style.position = 'fixed';
+      main.style.top = '0';
+      main.style.left = '0';
+
+      function easeScroll() {
+        sx = window.pageXOffset;
+        sy = window.pageYOffset;
+      }
+
+      window.addEventListener('scroll', easeScroll);
+
+      function render() {
+        dx = li(dx, sx, 0.07);
+        dy = li(dy, sy, 0.07);
+
+        dx = Math.floor(dx * 100) / 100;
+        dy = Math.floor(dy * 100) / 100;
+
+        main.style.transform = `translate3d(-${dx}px, -${dy}px, 0px)`;
+
+        if (Math.abs(sx - dx) > 0.5 || Math.abs(sy - dy) > 0.5) {
+          window.requestAnimationFrame(render);
+        }
+      }
+
+      function li(a, b, n) {
+        return (1 - n) * a + n * b;
+      }
+
+      window.requestAnimationFrame(render);
+    });
+  </script>
+</body>
+</html>
